@@ -1,8 +1,10 @@
 // when sketch is loaded webcam should start
 // press 'q' to record a 'angry face' image
-// press 'w' to record a 'happy face' iamge
+// press 'w' to record a 'happy face' image
 // press 't' to train the ml5 model
 // after training finished a label appears
+// every second the label gets checked, 
+// when the label reads 'angry' an image will download
 
 
 let capture;
