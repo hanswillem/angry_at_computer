@@ -78,19 +78,25 @@ function drawHud() {
 
 function keyPressed() {
   // if key = 'q'
-  if (keyCode === 81) {
+  if (keyCode == 81) {
     classifier.addImage('angry');
     angry_counter ++;
   }
   // if key = 'w'
-  if (keyCode === 87) {
+  if (keyCode == 87) {
     classifier.addImage('happy');
     happy_counter ++;
   }
   // if key = 't'
-  if (keyCode === 84) {
+  if (keyCode == 84) {
     console.log('training');
     training_started = true;
     classifier.train(whileTraining);
   }
+  // if key = 'r'
+  if (keyCode == 82) {
+    console.log('restarting');
+    location.reload();
+  }
+
 }
