@@ -7,6 +7,8 @@
 // when the label reads 'angry' an image will download
 
 
+let saveBuffer = false; // when set to true images will be saved
+
 let capture;
 let featureExtractor;
 let classifier;
@@ -14,6 +16,7 @@ let label;
 let angry_counter, happy_counter, angry_pictures_counter;
 let training_started;
 let training_done;
+
 
 
 function modelLoaded() {
@@ -86,9 +89,11 @@ function drawHud() {
 function takePicture() {
   if (label == 'angry') {
     console.log('taking angry picture');
-    angry_pictures_counter ++;
+    angry_pictures_counter++;
     let buffer = get(0, 0, 640, 480);
-    buffer.save();
+    if (saveBuffer) {
+      buffer.save();
+    }
   }
 }
 
@@ -97,12 +102,12 @@ function keyPressed() {
   // if key = 'q'
   if (keyCode == 81) {
     classifier.addImage('angry');
-    angry_counter ++;
+    angry_counter++;
   }
   // if key = 'w'
   if (keyCode == 87) {
     classifier.addImage('happy');
-    happy_counter ++;
+    happy_counter++;
   }
   // if key = 't'
   if (keyCode == 84) {
