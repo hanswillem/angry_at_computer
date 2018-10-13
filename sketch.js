@@ -9,8 +9,9 @@ let capture;
 let featureExtractor;
 let classifier;
 let label;
-let angry_counter, happy_counter;
+let angry_counter, happy_counter, angry_pictures_counter;
 let training_started;
+let training_done;
 
 
 function modelLoaded() {
@@ -25,9 +26,10 @@ function videoReady() {
 function whileTraining(loss) {
   if (loss == null) {
     hudString = '';
+    training_done = true;
     classifier.classify(gotResults);
   } else {
-    hudString = 'q = sad [ ' + angry_counter + ' ] | w = happy [ ' + happy_counter + ' ] | loss = ' + loss;
+    hudString = 'q = angry [ ' + angry_counter + ' ] | w = happy [ ' + happy_counter + ' ] | loss = ' + loss;
   }
 }
 
@@ -46,11 +48,14 @@ function setup() {
   textSize(14);
   angry_counter = 0;
   happy_counter = 0;
+  angry_pictures_counter = 0;
   training_started = false;
+  training_done = false;
   capture = createCapture(VIDEO);
   capture.hide();
   featureExtractor = ml5.featureExtractor('MobileNet', modelLoaded);
   classifier = featureExtractor.classification(capture, videoReady);
+  setInterval(takePicture, 1000);
 }
 
 
@@ -64,14 +69,24 @@ function draw() {
 function drawHud() {
   let hudStrimg;
   if (!training_started) {
-    hudString = 'q = sad [ ' + angry_counter + ' ] | w = happy [ ' + happy_counter + ' ] | t = train model';
+    hudString = 'q = angry [ ' + angry_counter + ' ] | w = happy [ ' + happy_counter + ' ] | t = train model';
   }
   textStyle(NORMAL);
   text(hudString, 10, 500);
   if (label) {
-    labelString = 'label: ' + label;
+    labelString = 'label: ' + label + ' [ ' + angry_pictures_counter + ' ]';
     textStyle(BOLD);
     text(labelString, 10, 500);
+  }
+}
+
+
+function takePicture() {
+  if (label == 'angry') {
+    console.log('taking angry picture');
+    angry_pictures_counter ++;
+    let buffer = get(0, 0, 640, 480);
+    buffer.save();
   }
 }
 
